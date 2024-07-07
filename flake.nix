@@ -28,6 +28,10 @@
           libevdev
           glib.dev
         ];
+
+        shellHook = ''
+          export CPATH="${pkgs.glib.dev}/include/glib-2.0:${pkgs.glib.out}/lib/glib-2.0/include:${pkgs.libevdev.out}/include/libevdev-1.0"
+        '';
       };
     });
 }
