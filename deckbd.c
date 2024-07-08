@@ -127,6 +127,8 @@ int find_controller() {
             char pre[268] = "/dev/input/";
             char *path = strcat(pre, dev->d_name);
 
+            g_debug("find_controller: Checking %s", path);
+
             fd = open(path, O_RDONLY | O_NONBLOCK);
             if (fd < 0) {
                 g_debug("Failed to open %s", path);
@@ -140,6 +142,7 @@ int find_controller() {
                     goto cleanup;
                 }
 
+                g_debug("find_controller: bustype %x  vendor %x  product %x", info.bustype, info.vendor, info.product);
                 if (info.bustype == SD_TYPE && info.vendor == SD_VID &&
                     info.product == SD_PID) {
                     struct libevdev *dev = NULL;
@@ -153,8 +156,11 @@ int find_controller() {
                         libevdev_free(dev);
                         goto final;
                     } else {
+                        g_debug("Found, but does not have the right key codes.");
                         libevdev_free(dev);
                     }
+                } else {
+                    g_debug("Skipping %s", path);
                 }
 
             cleanup:
