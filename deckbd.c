@@ -237,6 +237,8 @@ void press(struct managed_device device, uint16_t modifier, uint32_t code) {
 }
 
 void handle_event(struct managed_device device, struct input_event ev) {
+    g_debug("handle_event: type: %x, code: %x, value: %x", ev.type, ev.code,
+            ev.value);
     // update trigger state
     bool trigger_state_changed = false;
     switch (ev.code) {
